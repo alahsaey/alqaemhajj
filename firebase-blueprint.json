@@ -1,0 +1,439 @@
+{
+  "entities": {
+    "Pilgrim": {
+      "title": "Pilgrim",
+      "description": "Information about a pilgrim registered for Hajj or Umrah. Media attachments are stored strictly as external/Cloudinary URLs rather than binary blobs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "termsAccepted": { "type": "string", "enum": ["نعم", "لا"] },
+        "firstName": { "type": "string", "maxLength": 100 },
+        "secondName": { "type": "string", "maxLength": 100 },
+        "thirdName": { "type": "string", "maxLength": 100 },
+        "lastName": { "type": "string", "maxLength": 100 },
+        "englishFullName": { "type": "string", "maxLength": 200 },
+        "gender": { "type": "string", "enum": ["ذكر", "أنثى"] },
+        "nationality": { "type": "string", "maxLength": 100 },
+        "nationalId": { "type": "string", "minLength": 10, "maxLength": 10 },
+        "idIssueDate": { "type": "string", "format": "date" },
+        "idExpiryDate": { "type": "string", "format": "date" },
+        "birthDate": { "type": "string", "format": "date" },
+        "mobile": { "type": "string", "pattern": "^05[0-9]{8}$" },
+        "whatsapp": { "type": "string", "pattern": "^05[0-9]{8}$" },
+        "email": { "type": "string", "format": "email" },
+        "iban": { "type": "string", "minLength": 24, "maxLength": 24 },
+        "bankAccountName": { "type": "string", "maxLength": 200 },
+        "bankName": { "type": "string", "maxLength": 100 },
+        "transport": { "type": "string", "enum": ["باص", "طائرة"] },
+        "hajjType": { "type": "string", "enum": ["مستحب", "تمتع", "قِران", "إفراد", "عمرة"] },
+        "lastHajjYear": { "type": "string", "maxLength": 4 },
+        "currentMarji": { "type": "string", "maxLength": 100 },
+        "previousMarji": { "type": "string", "maxLength": 100 },
+        "mobilityIndependence": { "type": "string", "enum": ["نعم", "لا"] },
+        "status": { "type": "string", "enum": ["قيد المراجعة", "تم القبول", "مكتمل", "مقبول ومؤكد", "مكتمل الدفع", "معتذر", "مرفوض", "محذوف"] },
+        "applicationStatus": { "type": "string", "enum": ["قيد المراجعة", "تم القبول", "مكتمل"] },
+        "documentsReceived": { "type": "boolean" },
+        "paymentReceived": { "type": "boolean" },
+        "statusNotes": { "type": "string", "maxLength": 500 },
+        "roomNumber": { "type": "string", "maxLength": 100 },
+        "roomNumberMakkah": { "type": "string", "maxLength": 100 },
+        "roomNumberMadinah": { "type": "string", "maxLength": 100 },
+        "roomNumberMina": { "type": "string", "maxLength": 100 },
+        "busNumber": { "type": "string", "maxLength": 100 },
+        "busSeat": { "type": "string", "maxLength": 100 },
+        "flightNumberOutbound": { "type": "string", "maxLength": 200 },
+        "flightNumberReturn": { "type": "string", "maxLength": 200 },
+        "flightTicketNumber": { "type": "string", "maxLength": 100 },
+        "selectedPackage": { "type": "string", "maxLength": 200 },
+        "registrationReference": { "type": "string", "maxLength": 20 },
+        "nationalIdImage": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048,
+          "description": "External or Cloudinary URL for the National ID image"
+        },
+        "paymentReceipt": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048,
+          "description": "External or Cloudinary URL for the payment receipt image"
+        }
+      },
+      "required": ["id", "createdAt", "firstName", "lastName", "nationalId", "mobile", "registrationReference"]
+    },
+    "HajjPackage": {
+      "title": "Hajj Package",
+      "description": "Details of a Hajj or Umrah package offered by the campaign. Uses external/Cloudinary image URLs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "type": { "type": "string", "maxLength": 100 },
+        "price": { "type": "string", "maxLength": 50 },
+        "transport": { "type": "string", "maxLength": 200 },
+        "accommodationMakkah": { "type": "string", "maxLength": 500 },
+        "accommodationMadinah": { "type": "string", "maxLength": 500 },
+        "campMina": { "type": "string", "maxLength": 500 },
+        "features": { "type": "array", "items": { "type": "string" } },
+        "image": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048,
+          "description": "External or Cloudinary URL for the package cover image"
+        }
+      },
+      "required": ["id", "title", "price"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Important updates, lessons, and announcements for pilgrims. Stores only external/Cloudinary URLs for images and videos instead of binary blobs.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "date": { "type": "string", "format": "date" },
+        "content": { "type": "string", "maxLength": 5000 },
+        "category": { "type": "string", "enum": ["هام", "توجيهات", "مواعيد"] },
+        "fontSize": { "type": "string", "enum": ["sm", "normal", "lg", "xl", "2xl"] },
+        "isBold": { "type": "boolean" },
+        "textAlign": { "type": "string", "enum": ["right", "center", "justify"] },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048,
+          "description": "External or Cloudinary URL (https://...) for the attached image"
+        },
+        "videoUrl": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2048,
+          "description": "External, Cloudinary, or YouTube URL (https://...) for the attached video"
+        },
+        "mediaProvider": {
+          "type": "string",
+          "enum": ["cloudinary", "external", "youtube"],
+          "description": "External media hosting provider used for the announcement URLs"
+        },
+        "displaySettings": {
+          "type": "object",
+          "properties": {
+            "showImage": { "type": "boolean" },
+            "showVideo": { "type": "boolean" },
+            "enableLightbox": { "type": "boolean" },
+            "highlightCard": { "type": "boolean" }
+          }
+        }
+      },
+      "required": ["id", "title", "content", "category"]
+    },
+    "AdminUser": {
+      "title": "Admin User",
+      "description": "Campaign staff with administrative access",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string", "maxLength": 50 },
+        "pin": { "type": "string", "maxLength": 10 },
+        "fullName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["مدير عام (Master Admin)", "مشرف إداري", "مشرف إرشاد وديني", "محاسب القافلة"] },
+        "permissions": {
+          "type": "object",
+          "properties": {
+            "managePilgrims": { "type": "boolean" },
+            "manageAnnouncements": { "type": "boolean" },
+            "managePackages": { "type": "boolean" },
+            "manageStaff": { "type": "boolean" },
+            "manageFinance": { "type": "boolean" },
+            "manageReligiousGuide": { "type": "boolean" },
+            "manageTravelKit": { "type": "boolean" }
+          }
+        },
+        "createdAt": { "type": "string", "format": "date" }
+      },
+      "required": ["id", "username", "pin", "role"]
+    },
+    "CampaignSettings": {
+      "title": "Campaign Settings",
+      "description": "Global configuration, external media provider settings (Cloudinary), and texts for the campaign website",
+      "type": "object",
+      "properties": {
+        "phone": { "type": "string" },
+        "whatsapp": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "marjiList": { "type": "array", "items": { "type": "string" } },
+        "busList": { "type": "array", "items": { "type": "string" } },
+        "siteTexts": { "type": "object" },
+        "hajjDaysTimeline": { "type": "array" },
+        "cloudinaryConfig": {
+          "type": "object",
+          "description": "Configuration for uploading images and videos to Cloudinary CDN instead of database blobs",
+          "properties": {
+            "cloudName": { "type": "string", "maxLength": 120 },
+            "uploadPreset": { "type": "string", "maxLength": 120 }
+          }
+        },
+        "youtubeConfig": {
+          "type": "object",
+          "description": "Configuration for displaying latest YouTube channel video and live stream on the website",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "channelUrl": { "type": "string", "maxLength": 500 },
+            "channelId": { "type": "string", "maxLength": 100 },
+            "channelHandle": { "type": "string", "maxLength": 100 },
+            "isLiveActive": { "type": "boolean" },
+            "liveStreamUrl": { "type": "string", "maxLength": 500 },
+            "liveTitle": { "type": "string", "maxLength": 300 },
+            "cachedLatestVideoId": { "type": "string", "maxLength": 60 },
+            "cachedLatestVideoTitle": { "type": "string", "maxLength": 300 },
+            "cachedLatestVideoDate": { "type": "string", "maxLength": 60 }
+          }
+        }
+      }
+    },
+    "ActivityLog": {
+      "title": "Activity Log",
+      "description": "Audit trail of admin actions",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "adminId": { "type": "string" },
+        "adminName": { "type": "string" },
+        "action": { "type": "string" },
+        "target": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "adminId", "action", "timestamp"]
+    },
+    "PilgrimFeedback": {
+      "title": "Pilgrim Feedback",
+      "description": "Feedback provided by pilgrims after their trip",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "pilgrimId": { "type": "string" },
+        "pilgrimName": { "type": "string", "maxLength": 100 },
+        "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "comment": { "type": "string", "maxLength": 1000 },
+        "category": { "type": "string", "enum": ["التنظيم", "السكن", "الإعاشة", "الإرشاد الديني", "المواصلات", "عام"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "pilgrimId", "rating", "category", "createdAt"]
+    },
+    "NotificationItem": {
+      "title": "Notification Item",
+      "description": "Administrative broadcast or targeted notification for pilgrims with scheduling and delivery statistics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "body": { "type": "string", "maxLength": 3000 },
+        "priority": { "type": "string", "enum": ["urgent", "high", "normal"] },
+        "targetType": { "type": "string", "enum": ["all", "transport", "package", "bus", "gender", "individual"] },
+        "targetValue": { "type": "string", "maxLength": 200 },
+        "deliveryType": { "type": "string", "enum": ["instant", "scheduled"] },
+        "scheduledAt": { "type": "string" },
+        "status": { "type": "string", "enum": ["draft", "scheduled", "sent", "cancelled"] },
+        "createdBy": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "sentAt": { "type": "string" },
+        "stats": {
+          "type": "object",
+          "properties": {
+            "targetCount": { "type": "number" },
+            "sentCount": { "type": "number" },
+            "readCount": { "type": "number" },
+            "failureCount": { "type": "number" }
+          }
+        }
+      },
+      "required": ["id", "title", "body", "priority", "targetType", "deliveryType", "status", "createdAt"]
+    },
+    "PilgrimNotification": {
+      "title": "Pilgrim Notification",
+      "description": "Recipient-specific inbox record linking a notification to an individual pilgrim with read receipt",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "notificationId": { "type": "string" },
+        "pilgrimId": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "body": { "type": "string", "maxLength": 3000 },
+        "priority": { "type": "string", "enum": ["urgent", "high", "normal"] },
+        "isRead": { "type": "boolean" },
+        "readAt": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "notificationId", "pilgrimId", "title", "body", "priority", "isRead", "createdAt"]
+    },
+    "ReligiousGuide": {
+      "title": "Religious Guide",
+      "description": "Profile and assignments of a religious guide in the campaign, linked to assigned pilgrims in the database",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 150 },
+        "specialization": { "type": "string", "maxLength": 200 },
+        "languages": { "type": "array", "items": { "type": "string" } },
+        "assignedCampaigns": { "type": "array", "items": { "type": "string" } },
+        "assignedGroups": { "type": "array", "items": { "type": "string" } },
+        "assignedPilgrimIds": { "type": "array", "items": { "type": "string" } },
+        "rating": { "type": "number" },
+        "status": { "type": "string", "enum": ["نشط", "في مهمة ميدانية", "إجازة"] }
+      },
+      "required": ["id", "name", "phone", "specialization"]
+    },
+    "AwarenessProgram": {
+      "title": "Awareness Program",
+      "description": "Pre-Hajj, During-Hajj, or Post-Hajj religious awareness program",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 250 },
+        "phase": { "type": "string", "enum": ["قبل الحج", "أثناء الحج", "بعد الحج"] },
+        "topicCategory": { "type": "string", "maxLength": 150 },
+        "hajjStage": { "type": "string", "maxLength": 150 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "targetType": { "type": "string", "enum": ["all", "package", "bus", "flight"] },
+        "targetValue": { "type": "string", "maxLength": 200 },
+        "startDate": { "type": "string" },
+        "endDate": { "type": "string" },
+        "isActive": { "type": "boolean" }
+      },
+      "required": ["id", "title", "phase", "topicCategory"]
+    },
+    "ReligiousLesson": {
+      "title": "Religious Lesson",
+      "description": "Scheduled or completed religious lecture, lesson, or field session with unique QR code",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 250 },
+        "category": { "type": "string", "maxLength": 150 },
+        "phase": { "type": "string", "enum": ["قبل الحج", "أثناء الحج", "بعد الحج"] },
+        "guideId": { "type": "string" },
+        "guideName": { "type": "string", "maxLength": 150 },
+        "date": { "type": "string" },
+        "startTime": { "type": "string" },
+        "endTime": { "type": "string" },
+        "location": { "type": "string", "maxLength": 200 },
+        "status": { "type": "string", "enum": ["مسودة", "مجدول", "جارٍ", "مكتمل", "ملغى"] },
+        "qrCodeToken": { "type": "string", "maxLength": 120 }
+      },
+      "required": ["id", "title", "category", "date", "status", "qrCodeToken"]
+    },
+    "LessonAttendanceRecord": {
+      "title": "Lesson Attendance Record",
+      "description": "Pilgrim attendance record for a specific religious lesson via QR or manual verification",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "lessonId": { "type": "string" },
+        "pilgrimId": { "type": "string" },
+        "nationalId": { "type": "string" },
+        "pilgrimName": { "type": "string", "maxLength": 200 },
+        "status": { "type": "string", "enum": ["حاضر", "غائب", "مستأذن"] },
+        "method": { "type": "string", "enum": ["QR", "يدوي", "استيراد"] },
+        "approvedBy": { "type": "string", "maxLength": 150 },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["id", "lessonId", "pilgrimId", "status", "method", "timestamp"]
+    },
+    "ShariaInquiry": {
+      "title": "Sharia Inquiry",
+      "description": "Religious question submitted by a pilgrim with specialist answer and official approval status",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "pilgrimId": { "type": "string" },
+        "pilgrimName": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "maxLength": 150 },
+        "question": { "type": "string", "maxLength": 3000 },
+        "answer": { "type": "string", "maxLength": 5000 },
+        "status": { "type": "string", "enum": ["جديد", "قيد الإجابة", "بانتظار الاعتماد", "معتمد ومنشور", "مؤرشف"] },
+        "isApproved": { "type": "boolean" },
+        "approvedBy": { "type": "string", "maxLength": 150 }
+      },
+      "required": ["id", "pilgrimId", "category", "question", "status"]
+    },
+    "FiqhSection": {
+      "title": "Fiqh Section",
+      "description": "Dynamic jurisprudence section/chapter (أبواب المسائل الفقهية) with custom ordering, visibility toggle, and ID-based linking",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "originalDefaultName": { "type": "string", "maxLength": 200 },
+        "order": { "type": "number" },
+        "isVisible": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "order", "isVisible"]
+    }
+  },
+  "firestore": {
+    "pilgrims/{pilgrimId}": {
+      "schema": "Pilgrim",
+      "description": "Collection of registered pilgrims"
+    },
+    "packages/{packageId}": {
+      "schema": "HajjPackage",
+      "description": "Collection of Hajj/Umrah packages"
+    },
+    "announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Collection of announcements with external/Cloudinary media URLs"
+    },
+    "adminUsers/{adminUserId}": {
+      "schema": "AdminUser",
+      "description": "Collection of administrative users"
+    },
+    "settings/campaign": {
+      "schema": "CampaignSettings",
+      "description": "Global campaign settings document"
+    },
+    "activityLogs/{logId}": {
+      "schema": "ActivityLog",
+      "description": "Audit logs of administrative actions"
+    },
+    "feedback/{feedbackId}": {
+      "schema": "PilgrimFeedback",
+      "description": "Collection of post-trip pilgrim feedback"
+    },
+    "notifications/{notificationId}": {
+      "schema": "NotificationItem",
+      "description": "Central repository of administrative notifications and broadcasts"
+    },
+    "pilgrim_notifications/{id}": {
+      "schema": "PilgrimNotification",
+      "description": "Individual recipient inboxes for pilgrims with read state tracking"
+    },
+    "religious_guides/{guideId}": {
+      "schema": "ReligiousGuide",
+      "description": "Religious guides profiles, schedules, and performance evaluations"
+    },
+    "religious_programs/{programId}": {
+      "schema": "AwarenessProgram",
+      "description": "Pre-Hajj, During-Hajj, and Post-Hajj educational programs"
+    },
+    "religious_lessons/{lessonId}": {
+      "schema": "ReligiousLesson",
+      "description": "Scheduled and completed religious lessons and lectures"
+    },
+    "religious_attendance/{attendanceId}": {
+      "schema": "LessonAttendanceRecord",
+      "description": "QR and manual attendance records for religious lessons"
+    },
+    "religious_inquiries/{inquiryId}": {
+      "schema": "ShariaInquiry",
+      "description": "Sharia inquiries, specialist answers, and approval workflow"
+    },
+    "religious_fiqh_sections/{sectionId}": {
+      "schema": "FiqhSection",
+      "description": "Dynamic jurisprudence sections (أبواب المسائل الفقهية) with order and visibility state"
+    }
+  }
+}

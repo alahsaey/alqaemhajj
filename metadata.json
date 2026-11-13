@@ -1,0 +1,6 @@
+{
+  "name": "قافلة القائم للحج والعمرة",
+  "description": "النظام المتكامل لإدارة قافلة القائم للحج والعمرة، تسجيل الحجاج، إدارة الباقات، دليل المناسك، وبوابة الحاج.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

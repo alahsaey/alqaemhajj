@@ -1,0 +1,158 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default catch-all: Block unknown collections by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // PACKAGES COLLECTION
+    match /packages/{packageId} {
+      allow read: if true;
+      allow create, update: if isValidId(packageId) &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() > 0 &&
+        request.resource.data.title.size() <= 300;
+      allow delete: if isValidId(packageId);
+    }
+
+    // ANNOUNCEMENTS COLLECTION
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow create, update: if isValidId(announcementId) &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() > 0 &&
+        request.resource.data.title.size() <= 500;
+      allow delete: if isValidId(announcementId);
+    }
+
+    // SETTINGS & CLOUD MEDIA STORE COLLECTION (Includes /settings/campaign and /settings/mediaStore/...)
+    match /settings/{document=**} {
+      allow read: if true;
+      allow write: if true;
+    }
+
+    // ADMIN USERS COLLECTION
+    match /adminUsers/{userId} {
+      allow read: if true;
+      allow create, update: if isValidId(userId) &&
+        request.resource.data.username is string &&
+        request.resource.data.role is string;
+      allow delete: if isValidId(userId);
+    }
+
+    // FEEDBACK COLLECTION
+    match /feedback/{feedbackId} {
+      allow read: if true;
+      allow create, update: if isValidId(feedbackId) &&
+        request.resource.data.rating is number &&
+        request.resource.data.rating >= 1 &&
+        request.resource.data.rating <= 5;
+      allow delete: if isValidId(feedbackId);
+    }
+
+    // ACTIVITY LOGS COLLECTION (Immutable audit trail: cannot be deleted or modified once recorded)
+    match /activityLogs/{logId} {
+      allow read: if true;
+      allow create: if isValidId(logId) &&
+        request.resource.data.action is string &&
+        request.resource.data.action.size() <= 1000;
+      allow update, delete: if false;
+    }
+
+    // PILGRIMS COLLECTION
+    match /pilgrims/{pilgrimId} {
+      allow read: if true;
+      allow create, update: if isValidId(pilgrimId) &&
+        request.resource.data.nationalId is string &&
+        request.resource.data.firstName is string;
+      allow delete: if isValidId(pilgrimId);
+    }
+
+    // NOTIFICATIONS COLLECTION (Admin managed broadcasts and scheduled dispatches)
+    match /notifications/{notificationId} {
+      allow read: if true;
+      allow create, update: if isValidId(notificationId) &&
+        request.resource.data.title is string &&
+        request.resource.data.title.size() > 0 &&
+        request.resource.data.title.size() <= 300 &&
+        request.resource.data.body is string &&
+        request.resource.data.body.size() <= 4000;
+      allow delete: if isValidId(notificationId);
+    }
+
+    // PILGRIM NOTIFICATIONS INBOX COLLECTION (Recipient inboxes with read status)
+    match /pilgrim_notifications/{inboxId} {
+      allow read: if true;
+      allow create, update: if isValidId(inboxId) &&
+        request.resource.data.pilgrimId is string &&
+        request.resource.data.notificationId is string;
+      allow delete: if isValidId(inboxId);
+    }
+
+    // GIFT DISTRIBUTIONS COLLECTION (إدارة وتوزيع هدايا الحجاج)
+    match /gift_distributions/{distributionId} {
+      allow read: if true;
+      allow create, update: if isValidId(distributionId);
+      allow delete: if isValidId(distributionId);
+    }
+
+    // GIFT COMMUNICATIONS COLLECTION (سجل محاولات التواصل لمتابعة الهدايا)
+    match /gift_communications/{commId} {
+      allow read: if true;
+      allow create, update: if isValidId(commId);
+      allow delete: if isValidId(commId);
+    }
+
+    // RELIGIOUS GUIDANCE SYSTEM COLLECTIONS (منظومة الإرشاد الديني المتكاملة)
+    match /religious_guides/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_programs/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_lessons/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_attendance/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_questions/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_assessments/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_pilgrim_progress/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_references/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_inquiries/{docId} {
+      allow read: if true;
+      allow create, update, delete: if isValidId(docId);
+    }
+    match /religious_fiqh_sections/{docId} {
+      allow read: if true;
+      allow create, update: if isValidId(docId) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() > 0 &&
+        request.resource.data.name.size() <= 200;
+      allow delete: if isValidId(docId);
+    }
+  }
+}
